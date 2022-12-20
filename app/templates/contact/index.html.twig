@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact index{% endblock %}
+
+{% block body %}
+    <h1>Contact index</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>First_name</th>
+            <th>Last_name</th>
+            <th>Email</th>
+            <th>Phone_number</th>
+            <th>Note</th>
+            <th>Actions</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.id }}</td>
+                <td>{{ contact.firstName }}</td>
+                <td>{{ contact.lastName }}</td>
+                <td>{{ contact.email }}</td>
+                <td>{{ contact.phoneNumber }}</td>
+                <td><a href="#" onclick="alert('{{ contact.note }}')">Poznámka</a></td>
+                <td>
+                    <a href="{{ path('app_contact_edit', {'first_name': contact.firstName}) }}">edit</a>
+                </td>
+                <td>
+                    <form method="post" action="{{ path('app_contact_delete', {'id': contact.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ contact.id) }}">
+                        <button class="btn">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_contact_new') }}">Create new</a>
+{% endblock %}
