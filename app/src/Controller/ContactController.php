@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Contact;
 use App\Form\ContactType;
 use App\Repository\ContactRepository;
+use App\Utils\Paginator;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +16,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class ContactController extends AbstractController
 {
     #[Route('/', name: 'app_contact_index', methods: ['GET'])]
-    public function index(ContactRepository $contactRepository): Response
+    public function index(Request $request, Paginator $paginator, EntityManagerInterface $em): Response
     {
+        $query = $em->getRepository(Contact::class)->createQueryBuilder('c')->getQuery();
+        $paginator->paginate($query, $request->query->getInt('page', 1));
+
         return $this->render('contact/index.html.twig', [
-            'contacts' => $contactRepository->findAll(),
+            'paginator' => $paginator,
         ]);
     }
 

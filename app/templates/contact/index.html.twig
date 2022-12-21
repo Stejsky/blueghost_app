@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for contact in contacts %}
+        {% for contact in paginator.items() %}
             <tr>
                 <td>{{ contact.id }}</td>
                 <td>{{ contact.firstName }}</td>
@@ -42,6 +42,9 @@
                 <td colspan="7">no records found</td>
             </tr>
         {% endfor %}
+
+        {% include 'contact/_paginator.html.twig' %}
+
         </tbody>
     </table>
 

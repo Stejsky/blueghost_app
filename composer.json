@@ -1,0 +1,5 @@
+{
+    "require": {
+        "babdev/pagerfanta-bundle": "^3.7"
+    }
+}
